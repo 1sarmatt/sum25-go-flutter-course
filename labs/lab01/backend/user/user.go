@@ -2,6 +2,9 @@ package user
 
 import (
 	"errors"
+	"fmt"
+	"regexp"
+	"strings"
 )
 
 var (
@@ -13,33 +16,56 @@ var (
 	ErrEmptyName = errors.New("name cannot be empty")
 )
 
-// User represents a user in the system
 type User struct {
 	Name  string
 	Age   int
 	Email string
 }
 
-// NewUser creates a new user with validation
 func NewUser(name string, age int, email string) (*User, error) {
-	// TODO: Implement user creation with validation
-	return nil, nil
+
+	user := &User{
+		Name:  strings.TrimSpace(name),
+		Age:   age,
+		Email: strings.TrimSpace(email),
+	}
+
+	if err := user.Validate(); err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }
 
-// Validate checks if the user data is valid
 func (u *User) Validate() error {
-	// TODO: Implement user validation
+
+	if u.Name == "" {
+		return ErrEmptyName
+	}
+
+	if u.Age < 0 || u.Age > 150 {
+		return ErrInvalidAge
+	}
+
+	if !IsValidEmail(u.Email) {
+		return ErrInvalidEmail
+	}
+
 	return nil
 }
 
-// String returns a string representation of the user
 func (u *User) String() string {
-	// TODO: Implement string representation
-	return ""
+
+	return fmt.Sprintf("User{Name: %q, Age: %d, Email: %q}", u.Name, u.Age, u.Email)
+
 }
 
-// IsValidEmail checks if the email format is valid
 func IsValidEmail(email string) bool {
-	// TODO: Implement email validation
-	return false
+
+	if email == "" {
+		return false
+	}
+
+	regex := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
+	return regex.MatchString(email)
 }
