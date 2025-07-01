@@ -10,55 +10,55 @@ class CounterApp extends StatefulWidget {
 class _CounterAppState extends State<CounterApp> {
   int _counter = 0;
 
-  void _increment() {
-    setState(() {
-      _counter++;
-    });
+  void _incrementCounter() {
+    setState(() => _counter++);
   }
 
-  void _decrement() {
-    setState(() {
-      _counter--;
-    });
+  void _decrementCounter() {
+    setState(() => _counter--);
   }
 
-  void _reset() {
-    setState(() {
-      _counter = 0;
-    });
+  void _resetCounter() {
+    setState(() => _counter = 0);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Counter App'),
+        actions: [
+          IconButton(
+            onPressed: _resetCounter,
+            icon: const Icon(Icons.refresh),
+            tooltip: 'Reset',
+          ),
+        ],
+      ),
+      body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Counter',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
             Text(
               '$_counter',
-              style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 48),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                  onPressed: _decrement,
-                  icon: const Icon(Icons.remove),
+                FloatingActionButton(
+                  heroTag: 'decrement',
+                  onPressed: _decrementCounter,
+                  tooltip: 'Decrement',
+                  child: const Icon(Icons.remove),
                 ),
-                IconButton(
-                  onPressed: _reset,
-                  icon: const Icon(Icons.refresh),
-                ),
-                IconButton(
-                  onPressed: _increment,
-                  icon: const Icon(Icons.add),
+                const SizedBox(width: 32),
+                FloatingActionButton(
+                  heroTag: 'increment',
+                  onPressed: _incrementCounter,
+                  tooltip: 'Increment',
+                  child: const Icon(Icons.add),
                 ),
               ],
             ),

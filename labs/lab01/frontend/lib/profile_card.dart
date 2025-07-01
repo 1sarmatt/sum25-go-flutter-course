@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class ProfileCard extends StatelessWidget {
@@ -8,63 +7,46 @@ class ProfileCard extends StatelessWidget {
   final String? avatarUrl;
 
   const ProfileCard({
-    Key? key,
+    super.key,
     required this.name,
     required this.email,
     required this.age,
     this.avatarUrl,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.all(16.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             CircleAvatar(
-              radius: 35,
-              backgroundColor: Colors.grey[200],
-              child: avatarUrl != null
-                  ? ClipOval(
-                      child: Image.network(
-                        avatarUrl!,
-                        fit: BoxFit.cover,
-                        width: 70,
-                        height: 70,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Text(
-                            'J',
-                            style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-                          );
-                        },
-                      ),
+              radius: 50,
+              backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl!) : null,
+              child: avatarUrl == null
+                  ? Text(
+                      name.trim().isNotEmpty ? name.trim()[0].toUpperCase() : '?',
+                      style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                     )
-                  : const Text(
-                      'J',
-                      style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-                    ),
+                  : null,
             ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(email),
-                  const SizedBox(height: 4),
-                  Text('Age: $age'),
-                ],
-              ),
+            const SizedBox(height: 16),
+            Text(
+              name.trim(),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Age: $age',
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              email,
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
           ],
         ),
